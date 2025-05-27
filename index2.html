@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>旅行路线规划</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .iphone-frame {
+            width: 390px;
+            height: 844px;
+            border-radius: 55px;
+            background: #f5f5f5;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .status-bar {
+            height: 44px;
+            background: #000;
+            color: white;
+            font-size: 14px;
+            padding: 5px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .bottom-bar {
+            height: 83px;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid #e5e5e5;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding-bottom: 20px;
+        }
+        .screen-container {
+            height: calc(100% - 127px);
+            overflow: auto;
+        }
+        .prototype-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+        }
+        .map-container {
+            height: calc(100vh - 72px - 200px);
+            background: #e5e7eb;
+            position: relative;
+        }
+        .map-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1549144511-f099e773c147?ixlib=rb-4.0.3') center/cover;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8 text-center">旅行路线规划 APP 原型</h1>
+        <div class="prototype-container" id="prototypes">
+            <!-- Prototype frames will be inserted here by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        const pages = [
+            { 
+                id: 'home', 
+                title: '首页',
+                content: `<div class="p-6">
+                    <!-- 欢迎语 -->
+                    <div class="mb-8">
+                        <h1 class="text-3xl font-bold text-gray-800">Hi, 旅行者</h1>
+                        <p class="text-gray-600 mt-2">准备开始一段新的旅程？</p>
+                    </div>
+                    <!-- 搜索框 -->
+                    <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+                        <div class="relative mb-4">
+                            <i class="fas fa-search absolute left-4 top-4 text-gray-400"></i>
+                            <input type="text" placeholder="输入目的地，例如：东京、巴黎..." 
+                                   class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-blue-500">
+                        </div>
+                        <!-- 日期选择 -->
+                        <div class="flex gap-4 mb-4">
+                            <div class="flex-1">
+                                <label class="block text-sm text-gray-600 mb-2">出发日期</label>
+                                <div class="relative">
+                                    <i class="far fa-calendar absolute left-4 top-3 text-gray-400"></i>
+                                    <input type="date" class="w-full pl-12 pr-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:border-blue-500">
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <label class="block text-sm text-gray-600 mb-2">出行天数</label>
+                                <div class="relative">
+                                    <i class="far fa-clock absolute left-4 top-3 text-gray-400"></i>
+                                    <select class="w-full pl-12 pr-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:border-blue-500">
+                                        <option>3天</option>
+                                        <option>5天</option>
+                                        <option>7天</option>
+                                        <option>10天</option>
+                                        <option>自定义</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="w-full bg-blue-500 text-white py-3 rounded-xl font-medium hover:bg-blue-600 transition-colors">
+                            开始规划
+                        </button>
+                    </div>
+                    <!-- 热门目的地 -->
+                    <div class="mb-8">
+                        <h2 class="text-xl font-semibold mb-4">热门目的地</h2>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="relative rounded-2xl overflow-hidden h-32">
+                                <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3" 
+                                     class="w-full h-full object-cover">
+                                <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
+                                    <span class="text-white font-medium">东京</span>
+                                </div>
+                            </div>
+                            <div class="relative rounded-2xl overflow-hidden h-32">
+                                <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?ixlib=rb-4.0.3" 
+                                     class="w-full h-full object-cover">
+                                <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
+                                    <span class="text-white font-medium">巴黎</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 精选路线 -->
+                    <div>
+                        <h2 class="text-xl font-semibold mb-4">精选路线</h2>
+                        <div class="space-y-4">
+                            <div class="bg-white rounded-2xl p-4 shadow-sm">
+                                <div class="flex items-center gap-4">
+                                    <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?ixlib=rb-4.0.3" 
+                                         class="w-20 h-20 rounded-xl object-cover">
+                                    <div>
+                                        <h3 class="font-medium">新加坡 4日精华游</h3>
+                                        <p class="text-sm text-gray-500 mt-1">打卡圣淘沙、滨海湾花园</p>
+                                        <div class="flex items-center gap-2 mt-2">
+                                            <span class="text-sm text-blue-500">4.9分</span>
+                                            <span class="text-sm text-gray-400">·</span>
+                                            <span class="text-sm text-gray-500">已有2.3k人出行</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`
+            },
+            { 
+                id: 'destination', 
+                title: '目的地选择',
+                content: `<div class="bg-gray-50">
+                    <!-- 顶部导航 -->
+                    <div class="bg-white">
+                        <div class="flex items-center p-4">
+                            <button class="text-gray-800">
+                                <i class="fas fa-arrow-left text-xl"></i>
+                            </button>
+                            <h1 class="flex-1 text-center text-lg font-medium">选择目的地</h1>
+                            <div class="w-8"></div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <!-- 搜索框 -->
+                        <div class="relative mb-6">
+                            <i class="fas fa-search absolute left-4 top-4 text-gray-400"></i>
+                            <input type="text" placeholder="搜索目的地、景点、城市..." 
+                                   class="w-full pl-12 pr-4 py-3 rounded-xl bg-white shadow-sm border border-gray-100 focus:outline-none focus:border-blue-500">
+                        </div>
+                        <!-- 热门城市 -->
+                        <div class="mb-6">
+                            <h2 class="text-lg font-medium mb-4">热门城市</h2>
+                            <div class="grid grid-cols-4 gap-4">
+                                <div class="text-center">
+                                    <div class="w-full aspect-square rounded-2xl overflow-hidden mb-2">
+                                        <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3" class="w-full h-full object-cover">
+                                    </div>
+                                    <span class="text-sm">东京</span>
+                                </div>
+                                <div class="text-center">
+                                    <div class="w-full aspect-square rounded-2xl overflow-hidden mb-2">
+                                        <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?ixlib=rb-4.0.3" class="w-full h-full object-cover">
+                                    </div>
+                                    <span class="text-sm">巴黎</span>
+                                </div>
+                                <div class="text-center">
+                                    <div class="w-full aspect-square rounded-2xl overflow-hidden mb-2">
+                                        <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?ixlib=rb-4.0.3" class="w-full h-full object-cover">
+                                    </div>
+                                    <span class="text-sm">新加坡</span>
+                                </div>
+                                <div class="text-center">
+                                    <div class="w-full aspect-square rounded-2xl overflow-hidden mb-2">
+                                        <img src="https://images.unsplash.com/photo-1518391846015-55a9cc003b25?ixlib=rb-4.0.3" class="w-full h-full object-cover">
+                                    </div>
+                                    <span class="text-sm">首尔</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 目的地分类 -->
+                        <div>
+                            <h2 class="text-lg font-medium mb-4">按地区浏览</h2>
+                            <div class="space-y-4">
+                                <div class="bg-white rounded-xl p-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-4">
+                                            <i class="fas fa-globe-asia text-2xl text-blue-500"></i>
+                                            <div>
+                                                <h3 class="font-medium">亚洲</h3>
+                                                <p class="text-sm text-gray-500">日本、韩国、泰国等</p>
+                                            </div>
+                                        </div>
+                                        <i class="fas fa-chevron-right text-gray-400"></i>
+                                    </div>
+                                </div>
+                                <div class="bg-white rounded-xl p-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-4">
+                                            <i class="fas fa-globe-europe text-2xl text-green-500"></i>
+                                            <div>
+                                                <h3 class="font-medium">欧洲</h3>
+                                                <p class="text-sm text-gray-500">法国、意大利、西班牙等</p>
+                                            </div>
+                                        </div>
+                                        <i class="fas fa-chevron-right text-gray-400"></i>
+                                    </div>
+                                </div>
+                                <div class="bg-white rounded-xl p-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-4">
+                                            <i class="fas fa-globe-americas text-2xl text-red-500"></i>
+                                            <div>
+                                                <h3 class="font-medium">美洲</h3>
+                                                <p class="text-sm text-gray-500">美国、加拿大、墨西哥等</p>
+                                            </div>
+                                        </div>
+                                        <i class="fas fa-chevron-right text-gray-400"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`
+            },
+            { 
+                id: 'preferences', 
+                title: '偏好设置',
+                content: `<div class="bg-gray-50">
+                    <!-- 顶部导航 -->
+                    <div class="bg-white">
+                        <div class="flex items-center p-4">
+                            <button class="text-gray-800">
+                                <i class="fas fa-arrow-left text-xl"></i>
+                            </button>
+                            <h1 class="flex-1 text-center text-lg font-medium">个性化定制</h1>
+                            <div class="w-8"></div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <!-- 进度指示器 -->
+                        <div class="flex items-center justify-between mb-8">
+                            <div class="flex-1 h-2 bg-blue-500 rounded-full"></div>
+                            <div class="flex-1 h-2 bg-gray-200 rounded-full ml-2"></div>
+                            <div class="flex-1 h-2 bg-gray-200 rounded-full ml-2"></div>
+                        </div>
+                        <!-- 景点类型选择 -->
+                        <div class="mb-8">
+                            <h2 class="text-lg font-medium mb-4">你喜欢什么类型的景点？</h2>
+                            <div class="grid grid-cols-2 gap-4">
+                                <label class="relative">
+                                    <input type="checkbox" class="peer hidden">
+                                    <div class="bg-white p-4 rounded-xl border-2 border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50">
+                                        <i class="fas fa-landmark text-2xl mb-2 text-blue-500"></i>
+                                        <h3 class="font-medium">历史文化</h3>
+                                        <p class="text-sm text-gray-500">博物馆、古迹、寺庙</p>
+                                    </div>
+                                </label>
+                                <label class="relative">
+                                    <input type="checkbox" class="peer hidden">
+                                    <div class="bg-white p-4 rounded-xl border-2 border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50">
+                                        <i class="fas fa-tree text-2xl mb-2 text-green-500"></i>
+                                        <h3 class="font-medium">自然风光</h3>
+                                        <p class="text-sm text-gray-500">公园、海滩、山脉</p>
+                                    </div>
+                                </label>
+                                <label class="relative">
+                                    <input type="checkbox" class="peer hidden">
+                                    <div class="bg-white p-4 rounded-xl border-2 border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50">
+                                        <i class="fas fa-shopping-bag text-2xl mb-2 text-pink-500"></i>
+                                        <h3 class="font-medium">购物美食</h3>
+                                        <p class="text-sm text-gray-500">商场、市场、餐厅</p>
+                                    </div>
+                                </label>
+                                <label class="relative">
+                                    <input type="checkbox" class="peer hidden">
+                                    <div class="bg-white p-4 rounded-xl border-2 border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50">
+                                        <i class="fas fa-camera text-2xl mb-2 text-purple-500"></i>
+                                        <h3 class="font-medium">网红打卡</h3>
+                                        <p class="text-sm text-gray-500">拍照圣地、特色建筑</p>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <!-- 出游节奏选择 -->
+                        <div class="mb-8">
+                            <h2 class="text-lg font-medium mb-4">你期望的出游节奏是？</h2>
+                            <div class="space-y-4">
+                                <label class="block">
+                                    <input type="radio" name="pace" class="peer hidden">
+                                    <div class="bg-white p-4 rounded-xl border-2 border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <h3 class="font-medium">轻松休闲</h3>
+                                                <p class="text-sm text-gray-500">每天2-3个景点，充分休息</p>
+                                            </div>
+                                            <i class="fas fa-check text-blue-500 opacity-0 peer-checked:opacity-100"></i>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="block">
+                                    <input type="radio" name="pace" class="peer hidden">
+                                    <div class="bg-white p-4 rounded-xl border-2 border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <h3 class="font-medium">适中平衡</h3>
+                                                <p class="text-sm text-gray-500">每天3-4个景点，适度游玩</p>
+                                            </div>
+                                            <i class="fas fa-check text-blue-500 opacity-0 peer-checked:opacity-100"></i>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="block">
+                                    <input type="radio" name="pace" class="peer hidden">
+                                    <div class="bg-white p-4 rounded-xl border-2 border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <h3 class="font-medium">快速高效</h3>
+                                                <p class="text-sm text-gray-500">每天4-5个景点，充分游玩</p>
+                                            </div>
+                                            <i class="fas fa-check text-blue-500 opacity-0 peer-checked:opacity-100"></i>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <!-- 底部按钮 -->
+                        <button class="w-full bg-blue-500 text-white py-3 rounded-xl font-medium hover:bg-blue-600 transition-colors">
+                            下一步
+                        </button>
+                    </div>
+                </div>`
+            },
+            { 
+                id: 'must-visit', 
+                title: '必去景点',
+                content: `<div class="bg-gray-50">
+                    <!-- 顶部导航 -->
+                    <div class="bg-white">
+                        <div class="flex items-center p-4">
+                            <button class="text-gray-800">
+                                <i class="fas fa-arrow-left text-xl"></i>
+                            </button>
+                            <h1 class="flex-1 text-center text-lg font-medium">选择必去景点</h1>
+                            <div class="w-8"></div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <!-- 进度指示器 -->
+                        <div class="flex items-center justify-between mb-8">
+                            <div class="flex-1 h-2 bg-blue-500 rounded-full"></div>
+                            <div class="flex-1 h-2 bg-blue-500 rounded-full ml-2"></div>
+                            <div class="flex-1 h-2 bg-gray-200 rounded-full ml-2"></div>
+                        </div>
+                        <!-- 搜索框 -->
+                        <div class="relative mb-6">
+                            <i class="fas fa-search absolute left-4 top-4 text-gray-400"></i>
+                            <input type="text" placeholder="搜索想去的景点..." 
+                                   class="w-full pl-12 pr-4 py-3 rounded-xl bg-white shadow-sm border border-gray-100 focus:outline-none focus:border-blue-500">
+                        </div>
+                        <!-- 已选景点 -->
+                        <div class="mb-6">
+                            <h2 class="text-lg font-medium mb-4">已选景点（3）</h2>
+                            <div class="space-y-4">
+                                <div class="bg-white rounded-xl p-4 flex items-center justify-between">
+                                    <div class="flex items-center gap-4">
+                                        <img src="https://images.unsplash.com/photo-1542051841857-5f90071e7989?ixlib=rb-4.0.3" 
+                                             class="w-16 h-16 rounded-lg object-cover">
+                                        <div>
+                                            <h3 class="font-medium">东京塔</h3>
+                                            <p class="text-sm text-gray-500">地标建筑 · 观景台</p>
+                                        </div>
+                                    </div>
+                                    <button class="text-red-500">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="bg-white rounded-xl p-4 flex items-center justify-between">
+                                    <div class="flex items-center gap-4">
+                                        <img src="https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?ixlib=rb-4.0.3" 
+                                             class="w-16 h-16 rounded-lg object-cover">
+                                        <div>
+                                            <h3 class="font-medium">浅草寺</h3>
+                                            <p class="text-sm text-gray-500">寺庙 · 历史古迹</p>
+                                        </div>
+                                    </div>
+                                    <button class="text-red-500">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 推荐景点 -->
+                        <div>
+                            <h2 class="text-lg font-medium mb-4">推荐景点</h2>
+                            <div class="space-y-4">
+                                <div class="bg-white rounded-xl p-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-4">
+                                            <img src="https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?ixlib=rb-4.0.3" 
+                                                 class="w-16 h-16 rounded-lg object-cover">
+                                            <div>
+                                                <h3 class="font-medium">明治神宫</h3>
+                                                <p class="text-sm text-gray-500">神社 · 公园</p>
+                                                <div class="flex items-center gap-2 mt-1">
+                                                    <span class="text-sm text-blue-500">4.8分</span>
+                                                    <span class="text-xs text-gray-400">|</span>
+                                                    <span class="text-sm text-gray-500">游览约2小时</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="w-20 h-8 rounded-full border-2 border-blue-500 text-blue-500 text-sm font-medium hover:bg-blue-50">
+                                            添加
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="bg-white rounded-xl p-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-4">
+                                            <img src="https://images.unsplash.com/photo-1542931287-023b922fa89b?ixlib=rb-4.0.3" 
+                                                 class="w-16 h-16 rounded-lg object-cover">
+                                            <div>
+                                                <h3 class="font-medium">涩谷十字路口</h3>
+                                                <p class="text-sm text-gray-500">地标 · 商圈</p>
+                                                <div class="flex items-center gap-2 mt-1">
+                                                    <span class="text-sm text-blue-500">4.6分</span>
+                                                    <span class="text-xs text-gray-400">|</span>
+                                                    <span class="text-sm text-gray-500">游览约1小时</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="w-20 h-8 rounded-full border-2 border-blue-500 text-blue-500 text-sm font-medium hover:bg-blue-50">
+                                            添加
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 必去景点页面底部按钮 -->
+                        <div class="mt-20 bg-white border-t">
+                            <button class="w-full bg-blue-500 text-white py-3 rounded-xl font-medium hover:bg-blue-600 transition-colors">
+                                生成行程（3个景点）
+                            </button>
+                        </div>
+                    </div>
+                </div>`
+            },
+            { 
+                id: 'itinerary', 
+                title: '行程预览',
+                content: `<div class="bg-gray-50">
+                    <!-- 顶部导航 -->
+                    <div class="bg-white">
+                        <div class="flex items-center p-4">
+                            <button class="text-gray-800">
+                                <i class="fas fa-arrow-left text-xl"></i>
+                            </button>
+                            <h1 class="flex-1 text-center text-lg font-medium">行程预览</h1>
+                            <button class="text-blue-500">
+                                <i class="fas fa-share-alt text-xl"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <!-- 行程概览 -->
+                        <div class="bg-white rounded-xl p-4 mb-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <h2 class="text-xl font-semibold">东京 4日游</h2>
+                                    <p class="text-gray-500 text-sm mt-1">2024年6月1日 - 6月4日</p>
+                                </div>
+                                <button class="text-blue-500">
+                                    <i class="fas fa-edit text-xl"></i>
+                                </button>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="flex-1 text-center">
+                                    <div class="text-gray-500 text-sm">景点数</div>
+                                    <div class="font-semibold mt-1">12个</div>
+                                </div>
+                                <div class="w-px h-8 bg-gray-200"></div>
+                                <div class="flex-1 text-center">
+                                    <div class="text-gray-500 text-sm">游玩天数</div>
+                                    <div class="font-semibold mt-1">4天</div>
+                                </div>
+                                <div class="w-px h-8 bg-gray-200"></div>
+                                <div class="flex-1 text-center">
+                                    <div class="text-gray-500 text-sm">游玩节奏</div>
+                                    <div class="font-semibold mt-1">适中</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 每日行程 -->
+                        <div class="space-y-6">
+                            <!-- Day 1 -->
+                            <div>
+                                <h3 class="text-lg font-medium mb-4">Day 1 · 6月1日</h3>
+                                <div class="relative">
+                                    <div class="absolute top-0 bottom-0 left-6 w-0.5 bg-gray-200"></div>
+                                    <div class="space-y-6">
+                                        <div class="flex gap-4">
+                                            <div class="relative">
+                                                <div class="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white">
+                                                    <span>09:00</span>
+                                                </div>
+                                            </div>
+                                            <div class="flex-1 bg-white rounded-xl p-4">
+                                                <div class="flex gap-4">
+                                                    <img src="https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?ixlib=rb-4.0.3" 
+                                                         class="w-20 h-20 rounded-lg object-cover">
+                                                    <div>
+                                                        <h4 class="font-medium">浅草寺</h4>
+                                                        <p class="text-sm text-gray-500 mt-1">建议游览2小时</p>
+                                                        <div class="flex items-center gap-2 mt-2">
+                                                            <i class="fas fa-walking text-gray-400"></i>
+                                                            <span class="text-sm text-gray-500">步行10分钟到地铁站</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flex gap-4">
+                                            <div class="relative">
+                                                <div class="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white">
+                                                    <span>11:30</span>
+                                                </div>
+                                            </div>
+                                            <div class="flex-1 bg-white rounded-xl p-4">
+                                                <div class="flex gap-4">
+                                                    <img src="https://images.unsplash.com/photo-1542051841857-5f90071e7989?ixlib=rb-4.0.3" 
+                                                         class="w-20 h-20 rounded-lg object-cover">
+                                                    <div>
+                                                        <h4 class="font-medium">东京塔</h4>
+                                                        <p class="text-sm text-gray-500 mt-1">建议游览1.5小时</p>
+                                                        <div class="flex items-center gap-2 mt-2">
+                                                            <i class="fas fa-subway text-gray-400"></i>
+                                                            <span class="text-sm text-gray-500">地铁30分钟</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Day 2-4 预览 -->
+                            <div class="bg-white rounded-xl p-4">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-lg font-medium">Day 2 · 6月2日</h3>
+                                    <button class="text-blue-500">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                </div>
+                                <div class="flex items-center gap-2 mt-2 text-sm text-gray-500">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>明治神宫、原宿、涩谷</span>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-xl p-4">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-lg font-medium">Day 3 · 6月3日</h3>
+                                    <button class="text-blue-500">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-xl p-4">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-lg font-medium">Day 4 · 6月4日</h3>
+                                    <button class="text-blue-500">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 行程预览页面底部按钮 -->
+                        <div class="mt-20 bg-white border-t">
+                            <button class="w-full bg-blue-500 text-white py-3 rounded-xl font-medium hover:bg-blue-600 transition-colors">
+                                确认行程并开始导航
+                            </button>
+                        </div>
+                    </div>
+                </div>`
+            },
+            { 
+                id: 'navigation', 
+                title: '实时导航',
+                content: `<div class="bg-gray-50">
+                    <!-- 顶部导航 -->
+                    <div class="bg-white">
+                        <div class="flex items-center p-4">
+                            <button class="text-gray-800">
+                                <i class="fas fa-arrow-left text-xl"></i>
+                            </button>
+                            <h1 class="flex-1 text-center text-lg font-medium">实时导航</h1>
+                            <button class="text-blue-500">
+                                <i class="fas fa-ellipsis-v text-xl"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- 地图区域 -->
+                    <div class="map-container">
+                        <div class="map-overlay"></div>
+                        <!-- 地图控件 -->
+                        <div class="absolute top-4 right-4 space-y-2">
+                            <button class="w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                            <button class="w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button class="w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center">
+                                <i class="fas fa-location-arrow"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- 导航信息 -->
+                    <div class="bg-white p-4">
+                        <!-- 当前位置信息 -->
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-map-marker-alt text-blue-500"></i>
+                                </div>
+                                <div>
+                                    <h2 class="font-medium">浅草寺</h2>
+                                    <p class="text-sm text-gray-500">距离目的地还有800米</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-lg font-semibold">12分钟</div>
+                                <div class="text-sm text-gray-500">预计到达</div>
+                            </div>
+                        </div>
+                        <!-- 路线指引 -->
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-4">
+                                <div class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-walking text-gray-500"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="text-gray-800">向东步行200米</div>
+                                    <div class="text-sm text-gray-500">约3分钟</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-turn-right text-gray-500"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="text-gray-800">右转进入雷门通商店街</div>
+                                    <div class="text-sm text-gray-500">约5分钟</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 交通状况提醒 -->
+                        <div class="mt-4 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-exclamation-triangle text-yellow-500"></i>
+                                <div class="flex-1">
+                                    <div class="text-sm font-medium">前方路段较为拥挤</div>
+                                    <div class="text-xs text-gray-500 mt-1">建议提前5-10分钟出发</div>
+                                </div>
+                                <button class="text-blue-500 text-sm">查看详情</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 导航页面底部工具栏 -->
+                    <div class="mt-auto bg-white border-t">
+                        <div class="flex items-center justify-around p-4">
+                            <button class="flex flex-col items-center">
+                                <i class="fas fa-route text-blue-500 text-xl"></i>
+                                <span class="text-xs mt-1">路线</span>
+                            </button>
+                            <button class="flex flex-col items-center">
+                                <i class="fas fa-clock text-gray-400 text-xl"></i>
+                                <span class="text-xs mt-1">时间</span>
+                            </button>
+                            <button class="flex flex-col items-center">
+                                <i class="fas fa-map text-gray-400 text-xl"></i>
+                                <span class="text-xs mt-1">概览</span>
+                            </button>
+                            <button class="flex flex-col items-center">
+                                <i class="fas fa-cog text-gray-400 text-xl"></i>
+                                <span class="text-xs mt-1">设置</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>`
+            },
+            { 
+                id: 'adjustment', 
+                title: '行程调整',
+                content: `<div class="bg-gray-50">
+                    <!-- 顶部导航 -->
+                    <div class="bg-white">
+                        <div class="flex items-center p-4">
+                            <button class="text-gray-800">
+                                <i class="fas fa-arrow-left text-xl"></i>
+                            </button>
+                            <h1 class="flex-1 text-center text-lg font-medium">行程调整</h1>
+                            <div class="w-8"></div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <!-- 当前状况 -->
+                        <div class="bg-red-50 rounded-xl p-4 mb-6">
+                            <div class="flex items-start gap-3">
+                                <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-exclamation-circle text-red-500"></i>
+                                </div>
+                                <div>
+                                    <h2 class="font-medium text-red-900">浅草寺临时闭园</h2>
+                                    <p class="text-sm text-red-700 mt-1">由于临时维护，预计关闭2小时</p>
+                                    <div class="flex items-center gap-2 mt-2">
+                                        <i class="fas fa-clock text-red-400"></i>
+                                        <span class="text-sm text-red-700">预计14:00恢复开放</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 调整建议 -->
+                        <div class="mb-6">
+                            <h2 class="text-lg font-medium mb-4">智能调整建议</h2>
+                            <div class="space-y-4">
+                                <!-- 方案1 -->
+                                <label class="block">
+                                    <input type="radio" name="adjustment" class="peer hidden" checked>
+                                    <div class="bg-white p-4 rounded-xl border-2 border-gray-200 peer-checked:border-blue-500">
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h3 class="font-medium">调整游玩顺序</h3>
+                                            <span class="text-sm text-blue-500">推荐</span>
+                                        </div>
+                                        <p class="text-sm text-gray-500 mb-3">先前往附近的浅草商店街，待浅草寺开放后再返回</p>
+                                        <div class="flex items-center gap-4 text-sm text-gray-600">
+                                            <div class="flex items-center gap-1">
+                                                <i class="fas fa-clock"></i>
+                                                <span>无需额外时间</span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <i class="fas fa-walking"></i>
+                                                <span>步行5分钟</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <!-- 方案2 -->
+                                <label class="block">
+                                    <input type="radio" name="adjustment" class="peer hidden">
+                                    <div class="bg-white p-4 rounded-xl border-2 border-gray-200 peer-checked:border-blue-500">
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h3 class="font-medium">更换目的地</h3>
+                                            <span class="text-sm text-gray-500">备选方案</span>
+                                        </div>
+                                        <p class="text-sm text-gray-500 mb-3">前往附近的上野公园，可观赏樱花和参观博物馆</p>
+                                        <div class="flex items-center gap-4 text-sm text-gray-600">
+                                            <div class="flex items-center gap-1">
+                                                <i class="fas fa-clock"></i>
+                                                <span>需要30分钟</span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <i class="fas fa-subway"></i>
+                                                <span>地铁2站</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <!-- 方案3 -->
+                                <label class="block">
+                                    <input type="radio" name="adjustment" class="peer hidden">
+                                    <div class="bg-white p-4 rounded-xl border-2 border-gray-200 peer-checked:border-blue-500">
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h3 class="font-medium">延后访问</h3>
+                                            <span class="text-sm text-gray-500">备选方案</span>
+                                        </div>
+                                        <p class="text-sm text-gray-500 mb-3">调整至明天上午访问，今日改为游览其他景点</p>
+                                        <div class="flex items-center gap-4 text-sm text-gray-600">
+                                            <div class="flex items-center gap-1">
+                                                <i class="fas fa-calendar-alt"></i>
+                                                <span>需要调整2天行程</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <!-- 附近推荐 -->
+                        <div>
+                            <h2 class="text-lg font-medium mb-4">附近推荐景点</h2>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-white rounded-xl overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1542931287-023b922fa89b?ixlib=rb-4.0.3" 
+                                         class="w-full h-32 object-cover">
+                                    <div class="p-3">
+                                        <h3 class="font-medium">浅草商店街</h3>
+                                        <p class="text-xs text-gray-500 mt-1">步行5分钟</p>
+                                        <div class="flex items-center gap-1 mt-2">
+                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                                            <span class="text-sm">4.5</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-white rounded-xl overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?ixlib=rb-4.0.3" 
+                                         class="w-full h-32 object-cover">
+                                    <div class="p-3">
+                                        <h3 class="font-medium">上野公园</h3>
+                                        <p class="text-xs text-gray-500 mt-1">地铁15分钟</p>
+                                        <div class="flex items-center gap-1 mt-2">
+                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                                            <span class="text-sm">4.7</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 行程调整页面底部按钮 -->
+                        <div class="mt-20 bg-white border-t">
+                            <button class="w-full bg-blue-500 text-white py-3 rounded-xl font-medium hover:bg-blue-600 transition-colors">
+                                确认调整
+                            </button>
+                        </div>
+                    </div>
+                </div>`
+            },
+            { 
+                id: 'summary', 
+                title: '行程复盘',
+                content: `<div class="bg-gray-50">
+                    <!-- 顶部导航 -->
+                    <div class="bg-white">
+                        <div class="flex items-center p-4">
+                            <button class="text-gray-800">
+                                <i class="fas fa-arrow-left text-xl"></i>
+                            </button>
+                            <h1 class="flex-1 text-center text-lg font-medium">行程复盘</h1>
+                            <button class="text-blue-500">
+                                <i class="fas fa-share-alt text-xl"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <!-- 行程封面 -->
+                        <div class="relative rounded-xl overflow-hidden mb-6">
+                            <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3" 
+                                 class="w-full h-48 object-cover">
+                            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
+                                <h2 class="text-white text-xl font-semibold">东京 4日游</h2>
+                                <p class="text-white/80 text-sm mt-1">2024年6月1日 - 6月4日</p>
+                            </div>
+                        </div>
+                        <!-- 行程数据 -->
+                        <div class="grid grid-cols-4 gap-4 mb-6">
+                            <div class="bg-white rounded-xl p-3 text-center">
+                                <div class="text-2xl font-semibold text-blue-500">12</div>
+                                <div class="text-sm text-gray-500 mt-1">景点打卡</div>
+                            </div>
+                            <div class="bg-white rounded-xl p-3 text-center">
+                                <div class="text-2xl font-semibold text-green-500">42km</div>
+                                <div class="text-sm text-gray-500 mt-1">总距离</div>
+                            </div>
+                            <div class="bg-white rounded-xl p-3 text-center">
+                                <div class="text-2xl font-semibold text-purple-500">96</div>
+                                <div class="text-sm text-gray-500 mt-1">照片数</div>
+                            </div>
+                            <div class="bg-white rounded-xl p-3 text-center">
+                                <div class="text-2xl font-semibold text-orange-500">4.8</div>
+                                <div class="text-sm text-gray-500 mt-1">平均评分</div>
+                            </div>
+                        </div>
+                        <!-- 每日回顾 -->
+                        <div class="space-y-6">
+                            <!-- Day 1 -->
+                            <div class="bg-white rounded-xl p-4">
+                                <h3 class="text-lg font-medium mb-4">Day 1 · 6月1日</h3>
+                                <!-- 时间轴 -->
+                                <div class="relative pl-8 border-l-2 border-gray-100">
+                                    <div class="space-y-6">
+                                        <div class="relative">
+                                            <div class="absolute -left-[2.2rem] w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center">
+                                                <i class="fas fa-map-marker-alt text-white text-xs"></i>
+                                            </div>
+                                            <div>
+                                                <div class="flex items-center gap-2 text-sm text-gray-500 mb-2">
+                                                    <i class="fas fa-clock"></i>
+                                                    <span>09:00 - 11:00</span>
+                                                </div>
+                                                <div class="bg-gray-50 rounded-xl overflow-hidden">
+                                                    <img src="https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?ixlib=rb-4.0.3" 
+                                                         class="w-full h-40 object-cover">
+                                                    <div class="p-3">
+                                                        <h4 class="font-medium">浅草寺</h4>
+                                                        <p class="text-sm text-gray-500 mt-1">东京最古老的寺庙，感受日本传统文化</p>
+                                                        <div class="flex items-center gap-2 mt-2">
+                                                            <div class="flex">
+                                                                <i class="fas fa-star text-yellow-400"></i>
+                                                                <i class="fas fa-star text-yellow-400"></i>
+                                                                <i class="fas fa-star text-yellow-400"></i>
+                                                                <i class="fas fa-star text-yellow-400"></i>
+                                                                <i class="fas fa-star text-yellow-400"></i>
+                                                            </div>
+                                                            <span class="text-sm text-gray-500">非常推荐</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="relative">
+                                            <div class="absolute -left-[2.2rem] w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center">
+                                                <i class="fas fa-map-marker-alt text-white text-xs"></i>
+                                            </div>
+                                            <div>
+                                                <div class="flex items-center gap-2 text-sm text-gray-500 mb-2">
+                                                    <i class="fas fa-clock"></i>
+                                                    <span>11:30 - 13:00</span>
+                                                </div>
+                                                <div class="bg-gray-50 rounded-xl overflow-hidden">
+                                                    <img src="https://images.unsplash.com/photo-1542051841857-5f90071e7989?ixlib=rb-4.0.3" 
+                                                         class="w-full h-40 object-cover">
+                                                    <div class="p-3">
+                                                        <h4 class="font-medium">东京塔</h4>
+                                                        <p class="text-sm text-gray-500 mt-1">标志性建筑，俯瞰东京全景</p>
+                                                        <div class="flex items-center gap-2 mt-2">
+                                                            <div class="flex">
+                                                                <i class="fas fa-star text-yellow-400"></i>
+                                                                <i class="fas fa-star text-yellow-400"></i>
+                                                                <i class="fas fa-star text-yellow-400"></i>
+                                                                <i class="fas fa-star text-yellow-400"></i>
+                                                                <i class="far fa-star text-yellow-400"></i>
+                                                            </div>
+                                                            <span class="text-sm text-gray-500">值得一去</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Day 2-4 预览 -->
+                            <div class="bg-white rounded-xl p-4">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-lg font-medium">Day 2 · 6月2日</h3>
+                                    <button class="text-blue-500">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                </div>
+                                <div class="flex items-center gap-2 mt-2 text-sm text-gray-500">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>明治神宫、原宿、涩谷</span>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-xl p-4">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-lg font-medium">Day 3 · 6月3日</h3>
+                                    <button class="text-blue-500">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-xl p-4">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-lg font-medium">Day 4 · 6月4日</h3>
+                                    <button class="text-blue-500">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 行程复盘页面底部按钮 -->
+                        <div class="mt-20 bg-white border-t">
+                            <div class="flex gap-4">
+                                <button class="flex-1 bg-white border-2 border-blue-500 text-blue-500 py-3 rounded-xl font-medium">
+                                    保存相册
+                                </button>
+                                <button class="flex-1 bg-blue-500 text-white py-3 rounded-xl font-medium">
+                                    分享行程
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`
+            }
+        ];
+
+        function createPrototypeFrame(page) {
+            const container = document.createElement('div');
+            container.className = 'flex flex-col items-center';
+            
+            const title = document.createElement('h2');
+            title.className = 'text-xl font-semibold mb-4';
+            title.textContent = page.title;
+            
+            const frame = document.createElement('div');
+            frame.className = 'iphone-frame';
+            
+            const statusBar = document.createElement('div');
+            statusBar.className = 'status-bar';
+            statusBar.innerHTML = `
+                <span>9:41</span>
+                <div>
+                    <i class="fas fa-signal"></i>
+                    <i class="fas fa-wifi ml-2"></i>
+                    <i class="fas fa-battery-full ml-2"></i>
+                </div>
+            `;
+            
+            const screenContainer = document.createElement('div');
+            screenContainer.className = 'screen-container';
+            screenContainer.innerHTML = page.content;
+            
+            const bottomBar = document.createElement('div');
+            bottomBar.className = 'bottom-bar';
+            bottomBar.innerHTML = `
+                <a href="#" class="text-center">
+                    <i class="fas fa-home text-xl"></i>
+                    <div class="text-xs mt-1">首页</div>
+                </a>
+                <a href="#" class="text-center">
+                    <i class="fas fa-map-marked-alt text-xl"></i>
+                    <div class="text-xs mt-1">行程</div>
+                </a>
+                <a href="#" class="text-center">
+                    <i class="fas fa-compass text-xl"></i>
+                    <div class="text-xs mt-1">发现</div>
+                </a>
+                <a href="#" class="text-center">
+                    <i class="fas fa-user text-xl"></i>
+                    <div class="text-xs mt-1">我的</div>
+                </a>
+            `;
+            
+            frame.appendChild(statusBar);
+            frame.appendChild(screenContainer);
+            frame.appendChild(bottomBar);
+            container.appendChild(title);
+            container.appendChild(frame);
+            
+            return container;
+        }
+
+        const prototypesContainer = document.getElementById('prototypes');
+        pages.forEach(page => {
+            prototypesContainer.appendChild(createPrototypeFrame(page));
+        });
+    </script>
+</body>
+</html> 
