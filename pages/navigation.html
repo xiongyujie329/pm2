@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实时导航 - 旅行路线规划</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .map-container {
+            height: calc(100vh - 72px - 200px);
+            background: #e5e7eb;
+            position: relative;
+        }
+        .map-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1549144511-f099e773c147?ixlib=rb-4.0.3') center/cover;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- 顶部导航 -->
+    <div class="bg-white">
+        <div class="flex items-center p-4">
+            <button class="text-gray-800">
+                <i class="fas fa-arrow-left text-xl"></i>
+            </button>
+            <h1 class="flex-1 text-center text-lg font-medium">实时导航</h1>
+            <button class="text-blue-500">
+                <i class="fas fa-ellipsis-v text-xl"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- 地图区域 -->
+    <div class="map-container">
+        <div class="map-overlay"></div>
+        <!-- 地图控件 -->
+        <div class="absolute top-4 right-4 space-y-2">
+            <button class="w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center">
+                <i class="fas fa-plus"></i>
+            </button>
+            <button class="w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center">
+                <i class="fas fa-minus"></i>
+            </button>
+            <button class="w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center">
+                <i class="fas fa-location-arrow"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- 导航信息 -->
+    <div class="bg-white p-4">
+        <!-- 当前位置信息 -->
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-map-marker-alt text-blue-500"></i>
+                </div>
+                <div>
+                    <h2 class="font-medium">浅草寺</h2>
+                    <p class="text-sm text-gray-500">距离目的地还有800米</p>
+                </div>
+            </div>
+            <div class="text-right">
+                <div class="text-lg font-semibold">12分钟</div>
+                <div class="text-sm text-gray-500">预计到达</div>
+            </div>
+        </div>
+
+        <!-- 路线指引 -->
+        <div class="space-y-4">
+            <div class="flex items-center gap-4">
+                <div class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-walking text-gray-500"></i>
+                </div>
+                <div class="flex-1">
+                    <div class="text-gray-800">向东步行200米</div>
+                    <div class="text-sm text-gray-500">约3分钟</div>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-turn-right text-gray-500"></i>
+                </div>
+                <div class="flex-1">
+                    <div class="text-gray-800">右转进入雷门通商店街</div>
+                    <div class="text-sm text-gray-500">约5分钟</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 交通状况提醒 -->
+        <div class="mt-4 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+            <div class="flex items-center gap-3">
+                <i class="fas fa-exclamation-triangle text-yellow-500"></i>
+                <div class="flex-1">
+                    <div class="text-sm font-medium">前方路段较为拥挤</div>
+                    <div class="text-xs text-gray-500 mt-1">建议提前5-10分钟出发</div>
+                </div>
+                <button class="text-blue-500 text-sm">查看详情</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部工具栏 -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t">
+        <div class="flex items-center justify-around p-4">
+            <button class="flex flex-col items-center">
+                <i class="fas fa-route text-blue-500 text-xl"></i>
+                <span class="text-xs mt-1">路线</span>
+            </button>
+            <button class="flex flex-col items-center">
+                <i class="fas fa-clock text-gray-400 text-xl"></i>
+                <span class="text-xs mt-1">时间</span>
+            </button>
+            <button class="flex flex-col items-center">
+                <i class="fas fa-map text-gray-400 text-xl"></i>
+                <span class="text-xs mt-1">概览</span>
+            </button>
+            <button class="flex flex-col items-center">
+                <i class="fas fa-cog text-gray-400 text-xl"></i>
+                <span class="text-xs mt-1">设置</span>
+            </button>
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>偏好设置 - 旅行路线规划</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <!-- 顶部导航 -->
+    <div class="bg-white">
+        <div class="flex items-center p-4">
+            <button class="text-gray-800">
+                <i class="fas fa-arrow-left text-xl"></i>
+            </button>
+            <h1 class="flex-1 text-center text-lg font-medium">个性化定制</h1>
+            <div class="w-8"></div>
+        </div>
+    </div>
+
+    <div class="p-4">
+        <!-- 进度指示器 -->
+        <div class="flex items-center justify-between mb-8">
+            <div class="flex-1 h-2 bg-blue-500 rounded-full"></div>
+            <div class="flex-1 h-2 bg-gray-200 rounded-full ml-2"></div>
+            <div class="flex-1 h-2 bg-gray-200 rounded-full ml-2"></div>
+        </div>
+
+        <!-- 景点类型选择 -->
+        <div class="mb-8">
+            <h2 class="text-lg font-medium mb-4">你喜欢什么类型的景点？</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <label class="relative">
+                    <input type="checkbox" class="peer hidden">
+                    <div class="bg-white p-4 rounded-xl border-2 border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50">
+                        <i class="fas fa-landmark text-2xl mb-2 text-blue-500"></i>
+                        <h3 class="font-medium">历史文化</h3>
+                        <p class="text-sm text-gray-500">博物馆、古迹、寺庙</p>
+                    </div>
+                </label>
+                <label class="relative">
+                    <input type="checkbox" class="peer hidden">
+                    <div class="bg-white p-4 rounded-xl border-2 border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50">
+                        <i class="fas fa-tree text-2xl mb-2 text-green-500"></i>
+                        <h3 class="font-medium">自然风光</h3>
+                        <p class="text-sm text-gray-500">公园、海滩、山脉</p>
+                    </div>
+                </label>
+                <label class="relative">
+                    <input type="checkbox" class="peer hidden">
+                    <div class="bg-white p-4 rounded-xl border-2 border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50">
+                        <i class="fas fa-shopping-bag text-2xl mb-2 text-pink-500"></i>
+                        <h3 class="font-medium">购物美食</h3>
+                        <p class="text-sm text-gray-500">商场、市场、餐厅</p>
+                    </div>
+                </label>
+                <label class="relative">
+                    <input type="checkbox" class="peer hidden">
+                    <div class="bg-white p-4 rounded-xl border-2 border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50">
+                        <i class="fas fa-camera text-2xl mb-2 text-purple-500"></i>
+                        <h3 class="font-medium">网红打卡</h3>
+                        <p class="text-sm text-gray-500">拍照圣地、特色建筑</p>
+                    </div>
+                </label>
+            </div>
+        </div>
+
+        <!-- 出游节奏选择 -->
+        <div class="mb-8">
+            <h2 class="text-lg font-medium mb-4">你期望的出游节奏是？</h2>
+            <div class="space-y-4">
+                <label class="block">
+                    <input type="radio" name="pace" class="peer hidden">
+                    <div class="bg-white p-4 rounded-xl border-2 border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="font-medium">轻松休闲</h3>
+                                <p class="text-sm text-gray-500">每天2-3个景点，充分休息</p>
+                            </div>
+                            <i class="fas fa-check text-blue-500 opacity-0 peer-checked:opacity-100"></i>
+                        </div>
+                    </div>
+                </label>
+                <label class="block">
+                    <input type="radio" name="pace" class="peer hidden">
+                    <div class="bg-white p-4 rounded-xl border-2 border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="font-medium">适中平衡</h3>
+                                <p class="text-sm text-gray-500">每天3-4个景点，适度游玩</p>
+                            </div>
+                            <i class="fas fa-check text-blue-500 opacity-0 peer-checked:opacity-100"></i>
+                        </div>
+                    </div>
+                </label>
+                <label class="block">
+                    <input type="radio" name="pace" class="peer hidden">
+                    <div class="bg-white p-4 rounded-xl border-2 border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="font-medium">快速高效</h3>
+                                <p class="text-sm text-gray-500">每天4-5个景点，充分游玩</p>
+                            </div>
+                            <i class="fas fa-check text-blue-500 opacity-0 peer-checked:opacity-100"></i>
+                        </div>
+                    </div>
+                </label>
+            </div>
+        </div>
+
+        <!-- 底部按钮 -->
+        <button class="w-full bg-blue-500 text-white py-3 rounded-xl font-medium hover:bg-blue-600 transition-colors">
+            下一步
+        </button>
+    </div>
+</body>
+</html> 

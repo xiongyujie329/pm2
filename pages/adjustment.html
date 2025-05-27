@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>行程调整 - 旅行路线规划</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <!-- 顶部导航 -->
+    <div class="bg-white">
+        <div class="flex items-center p-4">
+            <button class="text-gray-800">
+                <i class="fas fa-arrow-left text-xl"></i>
+            </button>
+            <h1 class="flex-1 text-center text-lg font-medium">行程调整</h1>
+            <div class="w-8"></div>
+        </div>
+    </div>
+
+    <div class="p-4">
+        <!-- 当前状况 -->
+        <div class="bg-red-50 rounded-xl p-4 mb-6">
+            <div class="flex items-start gap-3">
+                <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-exclamation-circle text-red-500"></i>
+                </div>
+                <div>
+                    <h2 class="font-medium text-red-900">浅草寺临时闭园</h2>
+                    <p class="text-sm text-red-700 mt-1">由于临时维护，预计关闭2小时</p>
+                    <div class="flex items-center gap-2 mt-2">
+                        <i class="fas fa-clock text-red-400"></i>
+                        <span class="text-sm text-red-700">预计14:00恢复开放</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 调整建议 -->
+        <div class="mb-6">
+            <h2 class="text-lg font-medium mb-4">智能调整建议</h2>
+            <div class="space-y-4">
+                <!-- 方案1 -->
+                <label class="block">
+                    <input type="radio" name="adjustment" class="peer hidden" checked>
+                    <div class="bg-white p-4 rounded-xl border-2 border-gray-200 peer-checked:border-blue-500">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-medium">调整游玩顺序</h3>
+                            <span class="text-sm text-blue-500">推荐</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-3">先前往附近的浅草商店街，待浅草寺开放后再返回</p>
+                        <div class="flex items-center gap-4 text-sm text-gray-600">
+                            <div class="flex items-center gap-1">
+                                <i class="fas fa-clock"></i>
+                                <span>无需额外时间</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <i class="fas fa-walking"></i>
+                                <span>步行5分钟</span>
+                            </div>
+                        </div>
+                    </div>
+                </label>
+
+                <!-- 方案2 -->
+                <label class="block">
+                    <input type="radio" name="adjustment" class="peer hidden">
+                    <div class="bg-white p-4 rounded-xl border-2 border-gray-200 peer-checked:border-blue-500">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-medium">更换目的地</h3>
+                            <span class="text-sm text-gray-500">备选方案</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-3">前往附近的上野公园，可观赏樱花和参观博物馆</p>
+                        <div class="flex items-center gap-4 text-sm text-gray-600">
+                            <div class="flex items-center gap-1">
+                                <i class="fas fa-clock"></i>
+                                <span>需要30分钟</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <i class="fas fa-subway"></i>
+                                <span>地铁2站</span>
+                            </div>
+                        </div>
+                    </div>
+                </label>
+
+                <!-- 方案3 -->
+                <label class="block">
+                    <input type="radio" name="adjustment" class="peer hidden">
+                    <div class="bg-white p-4 rounded-xl border-2 border-gray-200 peer-checked:border-blue-500">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-medium">延后访问</h3>
+                            <span class="text-sm text-gray-500">备选方案</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-3">调整至明天上午访问，今日改为游览其他景点</p>
+                        <div class="flex items-center gap-4 text-sm text-gray-600">
+                            <div class="flex items-center gap-1">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>需要调整2天行程</span>
+                            </div>
+                        </div>
+                    </div>
+                </label>
+            </div>
+        </div>
+
+        <!-- 附近推荐 -->
+        <div>
+            <h2 class="text-lg font-medium mb-4">附近推荐景点</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-white rounded-xl overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1542931287-023b922fa89b?ixlib=rb-4.0.3" 
+                         class="w-full h-32 object-cover">
+                    <div class="p-3">
+                        <h3 class="font-medium">浅草商店街</h3>
+                        <p class="text-xs text-gray-500 mt-1">步行5分钟</p>
+                        <div class="flex items-center gap-1 mt-2">
+                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                            <span class="text-sm">4.5</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?ixlib=rb-4.0.3" 
+                         class="w-full h-32 object-cover">
+                    <div class="p-3">
+                        <h3 class="font-medium">上野公园</h3>
+                        <p class="text-xs text-gray-500 mt-1">地铁15分钟</p>
+                        <div class="flex items-center gap-1 mt-2">
+                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                            <span class="text-sm">4.7</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部按钮 -->
+        <div class="fixed bottom-0 left-0 right-0 p-4 bg-white border-t">
+            <button class="w-full bg-blue-500 text-white py-3 rounded-xl font-medium hover:bg-blue-600 transition-colors">
+                确认调整
+            </button>
+        </div>
+    </div>
+</body>
+</html> 

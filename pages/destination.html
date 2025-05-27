@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>目的地选择 - 旅行路线规划</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <!-- 顶部导航 -->
+    <div class="bg-white">
+        <div class="flex items-center p-4">
+            <button class="text-gray-800">
+                <i class="fas fa-arrow-left text-xl"></i>
+            </button>
+            <h1 class="flex-1 text-center text-lg font-medium">选择目的地</h1>
+            <div class="w-8"></div>
+        </div>
+    </div>
+
+    <div class="p-4">
+        <!-- 搜索框 -->
+        <div class="relative mb-6">
+            <i class="fas fa-search absolute left-4 top-4 text-gray-400"></i>
+            <input type="text" placeholder="搜索目的地、景点、城市..." 
+                   class="w-full pl-12 pr-4 py-3 rounded-xl bg-white shadow-sm border border-gray-100 focus:outline-none focus:border-blue-500">
+        </div>
+
+        <!-- 热门城市 -->
+        <div class="mb-6">
+            <h2 class="text-lg font-medium mb-4">热门城市</h2>
+            <div class="grid grid-cols-4 gap-4">
+                <div class="text-center">
+                    <div class="w-full aspect-square rounded-2xl overflow-hidden mb-2">
+                        <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3" class="w-full h-full object-cover">
+                    </div>
+                    <span class="text-sm">东京</span>
+                </div>
+                <div class="text-center">
+                    <div class="w-full aspect-square rounded-2xl overflow-hidden mb-2">
+                        <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?ixlib=rb-4.0.3" class="w-full h-full object-cover">
+                    </div>
+                    <span class="text-sm">巴黎</span>
+                </div>
+                <div class="text-center">
+                    <div class="w-full aspect-square rounded-2xl overflow-hidden mb-2">
+                        <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?ixlib=rb-4.0.3" class="w-full h-full object-cover">
+                    </div>
+                    <span class="text-sm">新加坡</span>
+                </div>
+                <div class="text-center">
+                    <div class="w-full aspect-square rounded-2xl overflow-hidden mb-2">
+                        <img src="https://images.unsplash.com/photo-1518391846015-55a9cc003b25?ixlib=rb-4.0.3" class="w-full h-full object-cover">
+                    </div>
+                    <span class="text-sm">首尔</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 目的地分类 -->
+        <div>
+            <h2 class="text-lg font-medium mb-4">按地区浏览</h2>
+            <div class="space-y-4">
+                <div class="bg-white rounded-xl p-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <i class="fas fa-globe-asia text-2xl text-blue-500"></i>
+                            <div>
+                                <h3 class="font-medium">亚洲</h3>
+                                <p class="text-sm text-gray-500">日本、韩国、泰国等</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl p-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <i class="fas fa-globe-europe text-2xl text-green-500"></i>
+                            <div>
+                                <h3 class="font-medium">欧洲</h3>
+                                <p class="text-sm text-gray-500">法国、意大利、西班牙等</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl p-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <i class="fas fa-globe-americas text-2xl text-red-500"></i>
+                            <div>
+                                <h3 class="font-medium">美洲</h3>
+                                <p class="text-sm text-gray-500">美国、加拿大、墨西哥等</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

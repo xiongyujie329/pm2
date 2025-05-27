@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>必去景点 - 旅行路线规划</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <!-- 顶部导航 -->
+    <div class="bg-white">
+        <div class="flex items-center p-4">
+            <button class="text-gray-800">
+                <i class="fas fa-arrow-left text-xl"></i>
+            </button>
+            <h1 class="flex-1 text-center text-lg font-medium">选择必去景点</h1>
+            <div class="w-8"></div>
+        </div>
+    </div>
+
+    <div class="p-4">
+        <!-- 进度指示器 -->
+        <div class="flex items-center justify-between mb-8">
+            <div class="flex-1 h-2 bg-blue-500 rounded-full"></div>
+            <div class="flex-1 h-2 bg-blue-500 rounded-full ml-2"></div>
+            <div class="flex-1 h-2 bg-gray-200 rounded-full ml-2"></div>
+        </div>
+
+        <!-- 搜索框 -->
+        <div class="relative mb-6">
+            <i class="fas fa-search absolute left-4 top-4 text-gray-400"></i>
+            <input type="text" placeholder="搜索想去的景点..." 
+                   class="w-full pl-12 pr-4 py-3 rounded-xl bg-white shadow-sm border border-gray-100 focus:outline-none focus:border-blue-500">
+        </div>
+
+        <!-- 已选景点 -->
+        <div class="mb-6">
+            <h2 class="text-lg font-medium mb-4">已选景点（3）</h2>
+            <div class="space-y-4">
+                <div class="bg-white rounded-xl p-4 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <img src="https://images.unsplash.com/photo-1542051841857-5f90071e7989?ixlib=rb-4.0.3" 
+                             class="w-16 h-16 rounded-lg object-cover">
+                        <div>
+                            <h3 class="font-medium">东京塔</h3>
+                            <p class="text-sm text-gray-500">地标建筑 · 观景台</p>
+                        </div>
+                    </div>
+                    <button class="text-red-500">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="bg-white rounded-xl p-4 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <img src="https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?ixlib=rb-4.0.3" 
+                             class="w-16 h-16 rounded-lg object-cover">
+                        <div>
+                            <h3 class="font-medium">浅草寺</h3>
+                            <p class="text-sm text-gray-500">寺庙 · 历史古迹</p>
+                        </div>
+                    </div>
+                    <button class="text-red-500">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 推荐景点 -->
+        <div>
+            <h2 class="text-lg font-medium mb-4">推荐景点</h2>
+            <div class="space-y-4">
+                <div class="bg-white rounded-xl p-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <img src="https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?ixlib=rb-4.0.3" 
+                                 class="w-16 h-16 rounded-lg object-cover">
+                            <div>
+                                <h3 class="font-medium">明治神宫</h3>
+                                <p class="text-sm text-gray-500">神社 · 公园</p>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <span class="text-sm text-blue-500">4.8分</span>
+                                    <span class="text-xs text-gray-400">|</span>
+                                    <span class="text-sm text-gray-500">游览约2小时</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="w-20 h-8 rounded-full border-2 border-blue-500 text-blue-500 text-sm font-medium hover:bg-blue-50">
+                            添加
+                        </button>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl p-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <img src="https://images.unsplash.com/photo-1542931287-023b922fa89b?ixlib=rb-4.0.3" 
+                                 class="w-16 h-16 rounded-lg object-cover">
+                            <div>
+                                <h3 class="font-medium">涩谷十字路口</h3>
+                                <p class="text-sm text-gray-500">地标 · 商圈</p>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <span class="text-sm text-blue-500">4.6分</span>
+                                    <span class="text-xs text-gray-400">|</span>
+                                    <span class="text-sm text-gray-500">游览约1小时</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="w-20 h-8 rounded-full border-2 border-blue-500 text-blue-500 text-sm font-medium hover:bg-blue-50">
+                            添加
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部按钮 -->
+        <div class="fixed bottom-0 left-0 right-0 p-4 bg-white border-t">
+            <button class="w-full bg-blue-500 text-white py-3 rounded-xl font-medium hover:bg-blue-600 transition-colors">
+                生成行程（3个景点）
+            </button>
+        </div>
+    </div>
+</body>
+</html> 
